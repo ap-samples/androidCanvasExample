@@ -9,16 +9,16 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
-public class CanvasPanel extends SurfaceView implements SurfaceHolder.Callback {
+public class CanvasView extends SurfaceView implements SurfaceHolder.Callback {
     private final int CANV_WIDTH;
     private final int CANV_HEIGHT;
 
     private SurfaceHolder sh;
     private Context context;
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private CanvasDrawingThread thread;
+    private CanvasDrawingThread canvasThread;
 
-	public CanvasPanel(Context context) {
+	public CanvasView(Context context) {
 		super(context);
 		sh = getHolder();
 		sh.addCallback(this);
@@ -34,23 +34,23 @@ public class CanvasPanel extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
-		thread.setSurfaceSize(CANV_WIDTH, CANV_HEIGHT);
+		canvasThread.setSurfaceSize(CANV_WIDTH, CANV_HEIGHT);
 	}
 
 	@Override
 	public void surfaceCreated(SurfaceHolder arg0) {
-	    thread = new CanvasDrawingThread(sh, context, new Handler(), paint, CANV_WIDTH, CANV_HEIGHT);
-	    thread.setRunning(true);
-	    thread.start();
+	    canvasThread = new CanvasDrawingThread(sh, paint, CANV_WIDTH, CANV_HEIGHT);
+	    canvasThread.setRunning(true);
+	    canvasThread.start();
 	}
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder arg0) {
 	    boolean retry = true;
-	    thread.setRunning(false);
+	    canvasThread.setRunning(false);
 	    while (retry) {
 	      try {
-	        thread.join();
+	        canvasThread.join();
 	        retry = false;
 	      } 
 	      catch (InterruptedException e) { }

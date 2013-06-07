@@ -1,10 +1,8 @@
 package eu.arttu.canvastest;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Handler;
 import android.view.SurfaceHolder;
 
 public class CanvasDrawingThread extends Thread {
@@ -21,8 +19,8 @@ public class CanvasDrawingThread extends Thread {
 	  private final Paint paint;
 	  
 	  
-	  public CanvasDrawingThread(SurfaceHolder surfaceHolder, Context context,
-		         Handler handler, Paint paint, int canvWidth, int canvHeight){
+	  public CanvasDrawingThread(SurfaceHolder surfaceHolder, Paint paint, 
+			  int canvWidth, int canvHeight){
 		  this.sh = surfaceHolder;
 		  this.paint = paint;
 		  
@@ -53,7 +51,7 @@ public class CanvasDrawingThread extends Thread {
 		          sh.unlockCanvasAndPost(canv);
 		      }
 		    }
-		  }
+	  }
 		    
 		  public void setRunning(boolean running) { 
 		    this.running = running;
