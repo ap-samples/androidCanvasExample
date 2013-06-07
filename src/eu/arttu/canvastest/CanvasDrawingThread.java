@@ -18,7 +18,7 @@ public class CanvasDrawingThread extends Thread {
 	  private int speedY = 1;
 	  
 	  private SurfaceHolder sh;
-	  private Paint paint;
+	  private final Paint paint;
 	  
 	  
 	  public CanvasDrawingThread(SurfaceHolder surfaceHolder, Context context,
@@ -29,10 +29,10 @@ public class CanvasDrawingThread extends Thread {
 		  //Note, that this is rather unnecessary, as width and height are reset in setSurfaceSize()
 		  this.canvasWidth = canvWidth;
 		  this.canvasHeight = canvHeight;
+		  paint.setColor(Color.RED);
 	  }
 	  
-	  public void setInitialValues() {
-		  paint.setColor(Color.RED);
+	  public void setInitialPositions() {
 		    synchronized (sh) {
 		      circleX = canvasWidth / 2;
 		      circleY = canvasHeight / 2;
@@ -47,10 +47,10 @@ public class CanvasDrawingThread extends Thread {
 		        synchronized (sh) {
 		          drawBubble(canv);
 		        }
-		      } finally {
-		        if (canv != null) {
+		      } 
+		      finally {
+		        if (canv != null)
 		          sh.unlockCanvasAndPost(canv);
-		        }
 		      }
 		    }
 		  }
@@ -61,9 +61,9 @@ public class CanvasDrawingThread extends Thread {
 		  
 		  public void setSurfaceSize(int width, int height) {
 		    synchronized (sh) {
-		      canvasWidth = width;
-		      canvasHeight = height;
-		      setInitialValues();
+		      this.canvasWidth = width;
+		      this.canvasHeight = height;
+		      setInitialPositions();
 		    }
 		  }
 		  
